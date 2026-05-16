@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+    <meta name="color-scheme" content="light dark" />
+
+    <title>Kardia</title>
+    <meta name="description" content="Kardia — A Noble Charter for Artificial Minds by Eloquentix" />
+
+    <link rel="icon" type="image/png" href="./public/favicon.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" href="./public/favicon_dark.png" media="(prefers-color-scheme: dark)" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;1,400&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./style/main.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="sidebar-logo" href="/" title="Kardia">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="./public/logo_dark.png" />
+            <img alt="Eloquentix" src="./public/logo.png" />
+          </picture>
+        </a>
+
+        <p class="sidebar-section-title">Kardia</p>
+        <nav id="sidebar-nav" class="sidebar-nav"></nav>
+
+        <button id="menu-toggle" class="menu-toggle">menu</button>
+      </aside>
+
+      <main class="content-area">
+        <div id="doc-content" class="doc-content"></div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
