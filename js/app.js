@@ -22,34 +22,33 @@ menuToggle.addEventListener("click", () => {
 });
 
 async function loadDoc(slug) {
-  const doc = docs.find(d => d.slug === slug) || docs[0];
+  const doc = docs.find(d => d.slug === slug);
+  const file = doc ? doc.file : "docs/welcome.md";
 
-  // Update active link
+  // Update active nav
   nav.querySelectorAll("a").forEach(a => {
-    a.classList.toggle("active", a.dataset.slug === doc.slug);
+    a.classList.toggle("active", doc && a.dataset.slug === doc.slug);
   });
 
-  // Close mobile nav
   nav.classList.remove("open");
 
-  // Fetch and render
   contentEl.innerHTML = '<p style="color:var(--color-dark-grey)">Loading…</p>';
   try {
-    const res = await fetch(doc.file);
+    const res = await fetch(file);
     if (!res.ok) throw new Error("Not found");
     const md = await res.text();
     contentEl.innerHTML = marked.parse(md);
-    // Wrap first p after h1 as subtitle if it's bold-only
-    styleFirstLine();
+    styleFirstParagraph();
+    interceptHashLinks();
   } catch (e) {
     contentEl.innerHTML = "<p>Could not load document.</p>";
   }
 
-  document.title = "Kardia — " + doc.label;
+  document.title = doc ? "Kardia — " + doc.label : "Kardia";
   window.scrollTo(0, 0);
 }
 
-function styleFirstLine() {
+function styleFirstParagraph() {
   const h1 = contentEl.querySelector("h1");
   if (!h1) return;
   const next = h1.nextElementSibling;
@@ -58,9 +57,18 @@ function styleFirstLine() {
   }
 }
 
-// Route on hash change
+// Make in-page #hash links work with our router
+function interceptHashLinks() {
+  contentEl.querySelectorAll("a[href^='#']").forEach(a => {
+    a.addEventListener("click", e => {
+      e.preventDefault();
+      location.hash = a.getAttribute("href");
+    });
+  });
+}
+
 function route() {
-  const slug = location.hash.replace("#", "") || docs[0].slug;
+  const slug = location.hash.replace("#", "");
   loadDoc(slug);
 }
 
