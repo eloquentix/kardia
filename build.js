@@ -119,7 +119,7 @@ function template({ title, desc, slug, bodyHTML }) {
           </picture>
         </a>
 
-        <p class="sidebar-section-title">Kardia</p>
+        <a class="sidebar-section-title" href="/">Kardia</a>
         <nav class="sidebar-nav" aria-label="Document navigation">
           ${sidebarNavHTML(slug)}
         </nav>
@@ -128,9 +128,6 @@ function template({ title, desc, slug, bodyHTML }) {
       </aside>
 
       <main class="content-area">
-        <nav class="top-nav" aria-label="Breadcrumb">
-          ${topNavHTML(slug)}
-        </nav>
         <article class="doc-content">
           ${bodyHTML}
         </article>
