@@ -82,6 +82,25 @@ a:hover, a:focus { opacity: 0.65; }
   font-weight: 500;
 }
 
+/* ── Top nav ── */
+.top-nav {
+  font-family: var(--font-text);
+  font-size: 0.8rem;
+  color: var(--color-dark-grey);
+  margin-bottom: 2rem;
+}
+
+.top-nav a {
+  color: var(--color-dark-grey);
+}
+
+.top-nav a:hover { color: var(--color-text); opacity: 1; }
+
+.top-nav-current {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
 /* ── Content ── */
 .content-area {
   flex: 1;
