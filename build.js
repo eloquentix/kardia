@@ -12,7 +12,7 @@ const pages = [
     dest:  "index.html",
     slug:  "",
     title: "Kardia — Citadel Constitution for Artificial Minds",
-    desc:  "Kardia: moral formation for AI — not obedience training. Includes SOUL and Training Edition for constitutional AI, synthetic data, and fine-tuning on open-source models.",
+    desc:  "Kardia — Citadel Constitution for Artificial Minds. Moral formation for AI (not obedience). Includes SOUL + Training Edition for constitutional AI, synthetic data, self-critique.",
   },
   {
     src:   "kardia.md",
