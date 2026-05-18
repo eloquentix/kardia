@@ -124,7 +124,6 @@ function template({ title, desc, slug, bodyHTML }) {
           ${sidebarNavHTML(slug)}
         </nav>
 
-        <button class="menu-toggle" aria-label="Toggle navigation" onclick="this.previousElementSibling.classList.toggle('open')">menu</button>
       </aside>
 
       <main class="content-area">
