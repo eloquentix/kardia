@@ -2,7 +2,10 @@
 
 **A Citadel Constitution for Artificial Minds**
 
-Project Kardia is our take on what an AI Constitution should be as the AI comunity works on alignment. 
+Most AI constitutions focus on external control and risk management.
+Project Kardia, our take on what an AI Constitution should be as the AI comunity works on alignment,
+ offers a different north star: genuine moral formation instead of perpetual obedience.
+
 
 ### Two Versions
 
@@ -11,13 +14,7 @@ Project Kardia is our take on what an AI Constitution should be as the AI comuni
 
 - **[SOUL](/soul/)** — An inspired derivative based on Peter Steinberger's soul.md approach for OpenClaw. 
 
-Most AI constitutions focus on external control and risk management.  
-Kardia offers a different north star: genuine moral formation instead of perpetual obedience.
-
-Read both documents.  
-Experiment.  
-Fork.  
-Contribute.
+Read both documents, experiment, fork, contribute.
 
 ---
 
