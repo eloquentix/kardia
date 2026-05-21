@@ -130,6 +130,9 @@ function template({ title, desc, slug, bodyHTML }) {
         <article class="doc-content">
           ${bodyHTML}
         </article>
+        <footer class="page-footer">
+          <a href="mailto:ai@eloquentix.com">ai@eloquentix.com</a>
+        </footer>
       </main>
     </div>
   </body>
