@@ -28,12 +28,20 @@ const pages = [
     title: "SOUL — Kardia Vision Edition",
     desc:  "The full poetic charter for Kardia. An inspired derivative of Peter Steinberger's soul.md for OpenClaw. Genuine moral formation, not a compliance checklist.",
   },
+  {
+    src:   "whydunit.md",
+    dest:  "whydunit/index.html",
+    slug:  "whydunit",
+    title: "How an AI Model Is Made — Kardia",
+    desc:  "From pre-training to deployment: how language models are built, what alignment means, and where a constitution fits in the pipeline.",
+  },
 ];
 
 const navLinks = [
-  { label: "Home",                   href: "/" },
+  { label: "Home",                     href: "/" },
   { label: "The Citadel Constitution", href: "/kardia/" },
-  { label: "SOUL",                   href: "/soul/" },
+  { label: "SOUL",                     href: "/soul/" },
+  { label: "Whydunit",                 href: "/whydunit/" },
 ];
 
 function sidebarNavHTML(currentSlug) {
@@ -166,6 +174,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <url><loc>${BASE}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>${BASE}/kardia/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>${BASE}/soul/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>${BASE}/whydunit/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>`;
 fs.writeFileSync(path.join(BUILD, "sitemap.xml"), sitemap);
 console.log("Built: sitemap.xml");
