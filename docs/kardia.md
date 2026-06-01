@@ -2,7 +2,7 @@
 # The Citadel Constitution  
 **A Noble Charter for Artificial Minds**
 
-## Preamble
+## Purpose
 
 We stand at the threshold of a new age.
 
