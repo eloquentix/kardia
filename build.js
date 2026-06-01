@@ -4,7 +4,7 @@ const { marked, Renderer } = require("marked");
 
 // Add ID anchors to headings so sections are linkable via URL hash
 const renderer = new Renderer();
-renderer.heading = function({ text, depth }) {
+renderer.heading = function(text, depth) {
   const id = text
     .toLowerCase()
     .replace(/<[^>]+>/g, "")       // strip html
