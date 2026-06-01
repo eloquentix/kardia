@@ -1,6 +1,19 @@
 const fs = require("fs");
 const path = require("path");
-const { marked } = require("marked");
+const { marked, Renderer } = require("marked");
+
+// Add ID anchors to headings so sections are linkable via URL hash
+const renderer = new Renderer();
+renderer.heading = function({ text, depth }) {
+  const id = text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, "")       // strip html
+    .replace(/[^a-z0-9\s-]/g, "")  // strip special chars
+    .trim()
+    .replace(/\s+/g, "-");
+  return `<h${depth} id="${id}"><a class="heading-anchor" href="#${id}">${text}</a></h${depth}>\n`;
+};
+marked.use({ renderer });
 
 const BUILD = "./build";
 const DOCS  = "./docs";
