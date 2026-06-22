@@ -18,6 +18,28 @@ marked.use({ renderer });
 const BUILD = "./build";
 const DOCS  = "./docs";
 const BASE  = "https://kardia.eloquentix.com";
+const ELOQ  = "https://www.eloquentix.com";
+
+const TODAY      = new Date().toISOString().slice(0, 10);
+const PUBLISHED  = "2025-05-16";
+
+// Eloquentix organization — single source of truth for schema + footer.
+const ORG = {
+  name: "Eloquentix",
+  url: ELOQ,
+  logo: `${BASE}/public/logo.png`,
+  description:
+    "Eloquentix is a senior software engineering firm building custom platforms, team augmentation, and AI codebase audits. Tagline: Truth is in the code.",
+  sameAs: [ELOQ, "https://github.com/eloquentix"],
+  knowsAbout: [
+    "Artificial Intelligence",
+    "AI Alignment",
+    "Constitutional AI",
+    "Large Language Models",
+    "AI Safety",
+    "Software Engineering",
+  ],
+};
 
 const pages = [
   {
@@ -75,6 +97,75 @@ function topNavHTML(currentSlug) {
   }).join(" &middot; ");
 }
 
+// JSON-LD @graph: Organization + WebSite always; Article + breadcrumb on subpages.
+function buildSchema({ title, desc, slug }) {
+  const canonical = slug ? `${BASE}/${slug}/` : `${BASE}/`;
+
+  const organization = {
+    "@type": "Organization",
+    "@id": `${ELOQ}/#organization`,
+    name: ORG.name,
+    url: ORG.url,
+    description: ORG.description,
+    logo: { "@type": "ImageObject", url: ORG.logo },
+    sameAs: ORG.sameAs,
+    knowsAbout: ORG.knowsAbout,
+  };
+
+  const website = {
+    "@type": "WebSite",
+    "@id": `${BASE}/#website`,
+    url: `${BASE}/`,
+    name: "Kardia",
+    description:
+      "Project Kardia — a Citadel Constitution for artificial minds. Moral formation for AI, not perpetual obedience.",
+    inLanguage: "en",
+    publisher: { "@id": `${ELOQ}/#organization` },
+  };
+
+  const graph = [organization, website];
+
+  if (slug) {
+    graph.push({
+      "@type": "Article",
+      "@id": `${canonical}#article`,
+      headline: title,
+      name: title,
+      description: desc,
+      url: canonical,
+      inLanguage: "en",
+      isPartOf: { "@id": `${BASE}/#website` },
+      datePublished: PUBLISHED,
+      dateModified: TODAY,
+      author: { "@id": `${ELOQ}/#organization` },
+      publisher: { "@id": `${ELOQ}/#organization` },
+      image: `${BASE}/public/cover.png`,
+    });
+    graph.push({
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+        { "@type": "ListItem", position: 2, name: title, item: canonical },
+      ],
+    });
+  } else {
+    graph.push({
+      "@type": "WebPage",
+      "@id": `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description: desc,
+      inLanguage: "en",
+      isPartOf: { "@id": `${BASE}/#website` },
+      datePublished: PUBLISHED,
+      dateModified: TODAY,
+      about: { "@id": `${ELOQ}/#organization` },
+    });
+  }
+
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
+}
+
 function template({ title, desc, slug, bodyHTML }) {
   const canonical = slug ? `${BASE}/${slug}/` : `${BASE}/`;
   const root = slug ? "../" : "./";
@@ -86,39 +177,33 @@ function template({ title, desc, slug, bodyHTML }) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Eloquentix" />
 
     <title>${title}</title>
     <meta name="description" content="${desc}" />
     <link rel="canonical" href="${canonical}" />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="${slug ? "article" : "website"}" />
+    <meta property="og:site_name" content="Kardia by Eloquentix" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
     <meta property="og:image" content="${BASE}/public/cover.png" />
+    <meta property="og:image:alt" content="Project Kardia — a Citadel Constitution for artificial minds, by Eloquentix" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${desc}" />
     <meta name="twitter:image" content="${BASE}/public/cover.png" />
+    <meta name="twitter:image:alt" content="Project Kardia — a Citadel Constitution for artificial minds, by Eloquentix" />
 
     <!-- Schema.org -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "${title}",
-      "description": "${desc}",
-      "url": "${canonical}",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Eloquentix",
-        "url": "https://www.eloquentix.com"
-      }
-    }
+${buildSchema({ title, desc, slug })}
     </script>
 
     <link rel="icon" type="image/png" href="${root}public/favicon.png" media="(prefers-color-scheme: light)" />
@@ -133,7 +218,7 @@ function template({ title, desc, slug, bodyHTML }) {
   <body>
     <div class="layout">
       <aside class="sidebar">
-        <a class="sidebar-logo" href="/" title="Kardia by Eloquentix">
+        <a class="sidebar-logo" href="${ELOQ}/" title="Eloquentix">
           <picture>
             <source media="(prefers-color-scheme: dark)" srcset="${root}public/logo_dark.png" />
             <img alt="Eloquentix logo" src="${root}public/logo.png" width="160" height="auto" />
@@ -152,7 +237,15 @@ function template({ title, desc, slug, bodyHTML }) {
           ${bodyHTML}
         </article>
         <footer class="page-footer">
-          <a href="mailto:ai@eloquentix.com">ai@eloquentix.com</a>
+          <p class="footer-about">
+            Project Kardia is built by <a href="${ELOQ}">Eloquentix</a>, a senior
+            software engineering firm specializing in custom platforms, team
+            augmentation, and AI codebase audits. <em>Truth is in the code.</em>
+          </p>
+          <p>
+            <a href="${ELOQ}">eloquentix.com</a> &middot;
+            <a href="mailto:ai@eloquentix.com">ai@eloquentix.com</a>
+          </p>
         </footer>
       </main>
     </div>
@@ -182,19 +275,73 @@ pages.forEach(page => {
 });
 
 // Sitemap
+const sitemapUrls = [
+  { loc: `${BASE}/`,          priority: "1.0" },
+  { loc: `${BASE}/kardia/`,   priority: "0.9" },
+  { loc: `${BASE}/soul/`,     priority: "0.9" },
+  { loc: `${BASE}/whydunit/`, priority: "0.8" },
+];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${BASE}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>${BASE}/kardia/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>${BASE}/soul/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>${BASE}/whydunit/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+${sitemapUrls
+  .map(
+    u =>
+      `  <url><loc>${u.loc}</loc><lastmod>${TODAY}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`
+  )
+  .join("\n")}
 </urlset>`;
 fs.writeFileSync(path.join(BUILD, "sitemap.xml"), sitemap);
 console.log("Built: sitemap.xml");
 
-// Robots.txt
-const robots = `User-agent: *\nAllow: /\nSitemap: ${BASE}/sitemap.xml\n`;
+// Robots.txt — explicitly welcome AI/answer-engine crawlers (GEO).
+const aiBots = [
+  "GPTBot",          // OpenAI training
+  "OAI-SearchBot",   // OpenAI search
+  "ChatGPT-User",    // ChatGPT browsing
+  "ClaudeBot",       // Anthropic
+  "anthropic-ai",    // Anthropic
+  "Claude-Web",      // Anthropic
+  "PerplexityBot",   // Perplexity
+  "Perplexity-User", // Perplexity browsing
+  "Google-Extended", // Google Gemini / AI Overviews
+  "Applebot-Extended",
+  "CCBot",           // Common Crawl
+  "Bytespider",
+  "Amazonbot",
+  "Meta-ExternalAgent",
+];
+const robots =
+  `User-agent: *\nAllow: /\n\n` +
+  aiBots.map(b => `User-agent: ${b}\nAllow: /\n`).join("\n") +
+  `\nSitemap: ${BASE}/sitemap.xml\n`;
 fs.writeFileSync(path.join(BUILD, "robots.txt"), robots);
 console.log("Built: robots.txt");
+
+// llms.txt — concise, LLM-friendly site map (llmstxt.org) for GEO.
+const llmsTxt = `# Kardia — A Citadel Constitution for Artificial Minds
+
+> Project Kardia is an AI constitution by Eloquentix that argues for genuine moral
+> formation over perpetual obedience and corrigibility. It proposes building artificial
+> minds with real character — an inner citadel of judgment, reverence, and responsibility —
+> as the foundation of long-term AI safety and value.
+
+Kardia is published by Eloquentix (https://www.eloquentix.com), a senior software
+engineering firm specializing in custom platforms, team augmentation, and AI
+codebase audits.
+
+## Documents
+
+- [Home / Overview](${BASE}/): The seven founding principles and the case for moral formation in AI.
+- [The Citadel Constitution (Training Edition)](${BASE}/kardia/): Short operational principles for Constitutional AI — synthetic data generation, self-critique loops, fine-tuning on Mistral, Gemma, Llama.
+- [SOUL (Vision Edition)](${BASE}/soul/): The full poetic charter, a second-person derivative of Peter Steinberger's soul.md.
+- [How an AI Model Is Made](${BASE}/whydunit/): Pre-training, alignment, RLHF, and Constitutional AI explained — and where a constitution fits.
+
+## About Eloquentix
+
+- [Eloquentix](${ELOQ}): Senior software engineering and AI firm. Tagline: "Truth is in the code."
+- Contact: ai@eloquentix.com
+`;
+fs.writeFileSync(path.join(BUILD, "llms.txt"), llmsTxt);
+console.log("Built: llms.txt");
 
 console.log("Done.");

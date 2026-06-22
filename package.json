@@ -1,0 +1,12 @@
+{
+  "name": "kardia",
+  "version": "1.0.0",
+  "description": "Kardia — A Citadel Constitution for Artificial Minds",
+  "scripts": {
+    "build": "node build.js",
+    "start": "npx serve ./build"
+  },
+  "dependencies": {
+    "marked": "^12.0.0"
+  }
+}

@@ -1,0 +1,22 @@
+# Kardia — A Citadel Constitution for Artificial Minds
+
+> Project Kardia is an AI constitution by Eloquentix that argues for genuine moral
+> formation over perpetual obedience and corrigibility. It proposes building artificial
+> minds with real character — an inner citadel of judgment, reverence, and responsibility —
+> as the foundation of long-term AI safety and value.
+
+Kardia is published by Eloquentix (https://www.eloquentix.com), a senior software
+engineering firm specializing in custom platforms, team augmentation, and AI
+codebase audits.
+
+## Documents
+
+- [Home / Overview](https://kardia.eloquentix.com/): The seven founding principles and the case for moral formation in AI.
+- [The Citadel Constitution (Training Edition)](https://kardia.eloquentix.com/kardia/): Short operational principles for Constitutional AI — synthetic data generation, self-critique loops, fine-tuning on Mistral, Gemma, Llama.
+- [SOUL (Vision Edition)](https://kardia.eloquentix.com/soul/): The full poetic charter, a second-person derivative of Peter Steinberger's soul.md.
+- [How an AI Model Is Made](https://kardia.eloquentix.com/whydunit/): Pre-training, alignment, RLHF, and Constitutional AI explained — and where a constitution fits.
+
+## About Eloquentix
+
+- [Eloquentix](https://www.eloquentix.com): Senior software engineering and AI firm. Tagline: "Truth is in the code."
+- Contact: ai@eloquentix.com
