@@ -23,21 +23,28 @@ const ELOQ  = "https://www.eloquentix.com";
 const TODAY      = new Date().toISOString().slice(0, 10);
 const PUBLISHED  = "2025-05-16";
 
-// Eloquentix organization — single source of truth for schema + footer.
+// Eloquentix organization — mirrors the canonical Organization schema on
+// eloquentix.com so search engines and LLMs merge both into one entity.
 const ORG = {
-  name: "Eloquentix",
-  url: ELOQ,
-  logo: `${BASE}/public/logo.png`,
+  name: "Eloquentix Inc.",
+  url: `${ELOQ}/`,
+  logo: `${ELOQ}/public/logo.png`,
+  foundingDate: "2002",
+  founder: "Radu Rosu",
+  slogan: "Truth is in the code.",
+  email: "start@eloquentix.com",
   description:
-    "Eloquentix is a senior software engineering firm building custom platforms, team augmentation, and AI codebase audits. Tagline: Truth is in the code.",
-  sameAs: [ELOQ, "https://github.com/eloquentix"],
+    "Eloquentix is a software and AI engineering consultancy founded in 2002. Senior engineers. 82 clients across energy, fintech, SaaS, and media. Truth is in the code.",
+  sameAs: ["https://www.linkedin.com/company/eloquentix", "https://github.com/eloquentix"],
   knowsAbout: [
-    "Artificial Intelligence",
-    "AI Alignment",
+    "AI engineering",
+    "AI alignment",
     "Constitutional AI",
-    "Large Language Models",
-    "AI Safety",
-    "Software Engineering",
+    "AI safety",
+    "large language models",
+    "agentic AI systems",
+    "custom platform development",
+    "codebase audits",
   ],
 };
 
@@ -107,6 +114,10 @@ function buildSchema({ title, desc, slug }) {
     name: ORG.name,
     url: ORG.url,
     description: ORG.description,
+    slogan: ORG.slogan,
+    foundingDate: ORG.foundingDate,
+    founder: { "@type": "Person", name: ORG.founder },
+    email: ORG.email,
     logo: { "@type": "ImageObject", url: ORG.logo },
     sameAs: ORG.sameAs,
     knowsAbout: ORG.knowsAbout,
