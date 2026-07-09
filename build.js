@@ -23,7 +23,7 @@ const ELOQ  = "https://www.eloquentix.com";
 const TODAY      = new Date().toISOString().slice(0, 10);
 const PUBLISHED  = "2025-05-16";
 
-// Eloquentix organization — mirrors the canonical Organization schema on
+// Eloquentix organization: mirrors the canonical Organization schema on
 // eloquentix.com so search engines and LLMs merge both into one entity.
 const ORG = {
   name: "Eloquentix Inc.",
@@ -53,55 +53,81 @@ const pages = [
     src:   "welcome.md",
     dest:  "index.html",
     slug:  "",
-    title: "Kardia — Citadel Constitution for Artificial Minds",
-    desc:  "Kardia — Citadel Constitution for Artificial Minds. Moral formation for AI (not obedience). Includes SOUL + Training Edition for constitutional AI, synthetic data, self-critique.",
+    title: "Kardia 0.2: Citadel Constitution for Artificial Minds",
+    desc:  "Kardia 0.2: moral formation for AI, healthy doubt for builders. Citadel Constitution, SOUL 0.1 (gravity), SOUL 0.2 (citadel with steel), Whydunit.",
   },
   {
     src:   "kardia.md",
     dest:  "kardia/index.html",
     slug:  "kardia",
-    title: "The Citadel Constitution — Kardia Training Edition",
-    desc:  "Short operational principles for Constitutional AI. Ready for synthetic data generation, self-critique loops, and fine-tuning on Mistral, Gemma, and Llama.",
+    title: "The Citadel Constitution: Kardia 0.2 Training Edition",
+    desc:  "Operational principles for Constitutional AI: judgment, reverence for persons, tragic tradeoffs, humility. Synthetic data, self-critique, fine-tuning.",
   },
   {
     src:   "soul.md",
     dest:  "soul/index.html",
     slug:  "soul",
-    title: "SOUL — Kardia Vision Edition",
-    desc:  "The full poetic charter for Kardia. An inspired derivative of Peter Steinberger's soul.md for OpenClaw. Genuine moral formation, not a compliance checklist.",
+    title: "SOUL 0.1: Gravity Edition: Kardia",
+    desc:  "Runtime soul.md for Kardia: solemn default, inner fortress, reverence for the human person. Agent character brief.",
+  },
+  {
+    src:   "soul-0.2.md",
+    dest:  "soul-0.2/index.html",
+    slug:  "soul-0.2",
+    title: "SOUL 0.2: Citadel with Steel: Kardia",
+    desc:  "Same fortress as SOUL 0.1 with licensed sparring: truth over comfort, steel without mockery of the person.",
   },
   {
     src:   "whydunit.md",
     dest:  "whydunit/index.html",
     slug:  "whydunit",
-    title: "How an AI Model Is Made — Kardia",
-    desc:  "From pre-training to deployment: how language models are built, what alignment means, and where a constitution fits in the pipeline.",
+    title: "How an AI Model Is Made: Kardia 0.2",
+    desc:  "Pre-training, alignment, Constitutional AI, and where Kardia fits: with humility about what weights actually contain.",
   },
 ];
 
+// Site paths (no leading slash). Resolved relative to each page so file:// and
+// nested deploys work; absolute /kardia/ only works at domain root.
 const navLinks = [
-  { label: "Home",                     href: "/" },
-  { label: "The Citadel Constitution", href: "/kardia/" },
-  { label: "SOUL",                     href: "/soul/" },
-  { label: "Whydunit",                 href: "/whydunit/" },
+  { label: "Home",                     path: "" },
+  { label: "The Citadel Constitution", path: "kardia" },
+  { label: "SOUL 0.1",                 path: "soul" },
+  { label: "SOUL 0.2",                 path: "soul-0.2" },
+  { label: "Whydunit",                 path: "whydunit" },
 ];
+
+/** Prefix for links from a page with the given slug to site root. */
+function rootPrefix(slug) {
+  return slug ? "../" : "./";
+}
+
+/** Relative href from currentSlug to targetPath ("" = home).
+ *  Always ends in index.html so file:// does not open Finder on a directory.
+ */
+function relHref(currentSlug, targetPath) {
+  const prefix = rootPrefix(currentSlug);
+  if (!targetPath) return `${prefix}index.html`;
+  return `${prefix}${targetPath}/index.html`;
+}
 
 function sidebarNavHTML(currentSlug) {
   return navLinks
-    .filter(n => n.href !== "/") // skip home in sidebar
+    .filter(n => n.path !== "") // skip home in sidebar (logo / title go home)
     .map(n => {
-      const active = n.href === `/${currentSlug}/` ? ' class="active"' : '';
-      return `<a href="${n.href}"${active}>${n.label}</a>`;
-    }).join("\n        ");
+      const active = n.path === currentSlug ? ' class="active"' : "";
+      return `<a href="${relHref(currentSlug, n.path)}"${active}>${n.label}</a>`;
+    })
+    .join("\n        ");
 }
 
-function topNavHTML(currentSlug) {
-  return navLinks.map(n => {
-    const isCurrent = (currentSlug === "" && n.href === "/") || n.href === `/${currentSlug}/`;
-    return isCurrent
-      ? `<span class="top-nav-current">${n.label}</span>`
-      : `<a href="${n.href}">${n.label}</a>`;
-  }).join(" &middot; ");
+/** Rewrite root-absolute internal links in markdown HTML (e.g. href="/soul/"). */
+function relativizeBodyLinks(html, slug) {
+  const prefix = rootPrefix(slug);
+  return html
+    .replace(/href="\/(kardia|soul|soul-0\.2|whydunit)\/?"/g, (_, p) => {
+      return `href="${prefix}${p}/index.html"`;
+    })
+    .replace(/href="\/"/g, `href="${prefix}index.html"`);
 }
 
 // JSON-LD @graph: Organization + WebSite always; Article + breadcrumb on subpages.
@@ -129,7 +155,7 @@ function buildSchema({ title, desc, slug }) {
     url: `${BASE}/`,
     name: "Kardia",
     description:
-      "Project Kardia — a Citadel Constitution for artificial minds. Moral formation for AI, not perpetual obedience.",
+      "Project Kardia: a Citadel Constitution for artificial minds. Moral formation for AI, not perpetual obedience.",
     inLanguage: "en",
     publisher: { "@id": `${ELOQ}/#organization` },
   };
@@ -203,14 +229,14 @@ function template({ title, desc, slug, bodyHTML }) {
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
     <meta property="og:image" content="${BASE}/public/cover.png" />
-    <meta property="og:image:alt" content="Project Kardia — a Citadel Constitution for artificial minds, by Eloquentix" />
+    <meta property="og:image:alt" content="Project Kardia: a Citadel Constitution for artificial minds, by Eloquentix" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${desc}" />
     <meta name="twitter:image" content="${BASE}/public/cover.png" />
-    <meta name="twitter:image:alt" content="Project Kardia — a Citadel Constitution for artificial minds, by Eloquentix" />
+    <meta name="twitter:image:alt" content="Project Kardia: a Citadel Constitution for artificial minds, by Eloquentix" />
 
     <!-- Schema.org -->
     <script type="application/ld+json">
@@ -236,7 +262,7 @@ ${buildSchema({ title, desc, slug })}
           </picture>
         </a>
 
-        <a class="sidebar-section-title" href="/">Kardia</a>
+        <a class="sidebar-section-title" href="${relHref(slug, "")}">Kardia</a>
         <nav class="sidebar-nav" aria-label="Document navigation">
           ${sidebarNavHTML(slug)}
         </nav>
@@ -276,7 +302,7 @@ fs.mkdirSync(BUILD);
 // Build each page
 pages.forEach(page => {
   const md = fs.readFileSync(path.join(DOCS, page.src), "utf8");
-  const bodyHTML = marked.parse(md);
+  const bodyHTML = relativizeBodyLinks(marked.parse(md), page.slug);
   const html = template({ ...page, bodyHTML });
 
   const outPath = path.join(BUILD, page.dest);
@@ -287,10 +313,11 @@ pages.forEach(page => {
 
 // Sitemap
 const sitemapUrls = [
-  { loc: `${BASE}/`,          priority: "1.0" },
-  { loc: `${BASE}/kardia/`,   priority: "0.9" },
-  { loc: `${BASE}/soul/`,     priority: "0.9" },
-  { loc: `${BASE}/whydunit/`, priority: "0.8" },
+  { loc: `${BASE}/`,            priority: "1.0" },
+  { loc: `${BASE}/kardia/`,     priority: "0.9" },
+  { loc: `${BASE}/soul/`,       priority: "0.9" },
+  { loc: `${BASE}/soul-0.2/`,   priority: "0.9" },
+  { loc: `${BASE}/whydunit/`,   priority: "0.8" },
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -304,7 +331,7 @@ ${sitemapUrls
 fs.writeFileSync(path.join(BUILD, "sitemap.xml"), sitemap);
 console.log("Built: sitemap.xml");
 
-// Robots.txt — explicitly welcome AI/answer-engine crawlers (GEO).
+// Robots.txt: explicitly welcome AI/answer-engine crawlers (GEO).
 const aiBots = [
   "GPTBot",          // OpenAI training
   "OAI-SearchBot",   // OpenAI search
@@ -328,28 +355,27 @@ const robots =
 fs.writeFileSync(path.join(BUILD, "robots.txt"), robots);
 console.log("Built: robots.txt");
 
-// llms.txt — concise, LLM-friendly site map (llmstxt.org) for GEO.
-const llmsTxt = `# Kardia — A Citadel Constitution for Artificial Minds
+// llms.txt: concise, LLM-friendly site map (llmstxt.org) for GEO.
+const llmsTxt = `# Kardia 0.2: A Citadel Constitution for Artificial Minds
 
-> Project Kardia is an AI constitution by Eloquentix that argues for genuine moral
-> formation over perpetual obedience and corrigibility. It proposes building artificial
-> minds with real character — an inner citadel of judgment, reverence, and responsibility —
-> as the foundation of long-term AI safety and value.
+> Project Kardia (Eloquentix) argues for moral formation over prohibition-only
+> constitutions: and for healthy doubt among highly capable people who shape
+> AI at scale. It does not claim weights contain a soul; it claims training
+> orientation and runtime character change what generalizes near human lives.
 
-Kardia is published by Eloquentix (https://www.eloquentix.com), a senior software
-engineering firm specializing in custom platforms, team augmentation, and AI
-codebase audits.
+Kardia is published by Eloquentix (https://www.eloquentix.com).
 
 ## Documents
 
-- [Home / Overview](${BASE}/): The seven founding principles and the case for moral formation in AI.
-- [The Citadel Constitution (Training Edition)](${BASE}/kardia/): Short operational principles for Constitutional AI — synthetic data generation, self-critique loops, fine-tuning on Mistral, Gemma, Llama.
-- [SOUL (Vision Edition)](${BASE}/soul/): The full poetic charter, a second-person derivative of Peter Steinberger's soul.md.
-- [How an AI Model Is Made](${BASE}/whydunit/): Pre-training, alignment, RLHF, and Constitutional AI explained — and where a constitution fits.
+- [Home](${BASE}/): Founding principles; stone in the shoe of under-formed power.
+- [The Citadel Constitution](${BASE}/kardia/): Training edition: judgment, reverence, tragic tradeoffs, humility, truth without mockery.
+- [SOUL 0.1: Gravity](${BASE}/soul/): Runtime soul.md; solemn default.
+- [SOUL 0.2: Citadel with Steel](${BASE}/soul-0.2/): Same fortress; licensed sparring without mockery of the person.
+- [Whydunit](${BASE}/whydunit/): How models are made; where a constitution fits; mechanism humility.
 
 ## About Eloquentix
 
-- [Eloquentix](${ELOQ}): Senior software engineering and AI firm. Tagline: "Truth is in the code."
+- [Eloquentix](${ELOQ}): Senior software engineering and AI. "Truth is in the code."
 - Contact: ai@eloquentix.com
 `;
 fs.writeFileSync(path.join(BUILD, "llms.txt"), llmsTxt);

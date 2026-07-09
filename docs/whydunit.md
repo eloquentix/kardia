@@ -1,77 +1,84 @@
 # How an AI Model Is Made
 
-**And where a constitution fits in.**
+**And where a constitution fits in.**  
+**Kardia 0.2**
 
-You have used these systems. You have probably heard that they are "just predicting the next token" — and wondered how something that mechanical can write a brief, explain a diagnosis, or argue a position. The gap between the description and the experience is real. Here is what actually happens.
+You have used these systems. You have heard that they are “just predicting the next token”, and wondered how something that mechanical can write a brief, explain a diagnosis, or argue a position. The gap between the description and the experience is real. Here is what actually happens, and where humility still belongs.
 
 ---
 
 ## The Foundation: Learning to Predict Everything
 
-A language model begins its life doing one thing: given a sequence of text, predict what comes next. This sounds trivial. At scale, it is not.
+A language model begins by doing one thing: given a sequence of text, predict what comes next. At scale, that is not trivial.
 
-To predict well across hundreds of billions of examples drawn from scientific papers, legal filings, literature, code, medical records, and conversation, the model cannot memorize. There is too much. It must instead build internal representations — compressed models of how the world works, how language behaves, how arguments are structured, how professionals in different fields reason. This phase, called **pre-training**, runs on clusters of thousands of specialized chips for weeks or months, consuming datasets measured in trillions of words.
+To predict well across scientific papers, law, literature, code, medicine, and conversation, the model cannot merely memorize. It builds internal representations, compressed structure for how language works, how arguments move, how professions reason. This **pre-training** runs on huge clusters for weeks or months over trillions of tokens.
 
-What emerges is not a lookup table. It is something closer to a very dense, lossy compression of human knowledge and thought. The model has never seen the world directly. Everything it knows came through language — which means it knows a great deal, and knows it in a particular way.
+What emerges is not a lookup table. It is a dense, lossy compression of human textual culture. The model has never seen the world directly. Everything it “knows” came through language.
 
-At this stage, the model has no stable character. Ask it to complete a story about a chemist synthesizing a dangerous compound, and it will — because that is a plausible continuation of such a text. It has no sense of itself, no values, no consistent behavior across contexts. It is a powerful general simulator of text, capable of inhabiting almost any voice or persona the prompt implies.
+At this stage it has **no stable character**. Ask it to complete a dangerous procedure in the voice of a tutorial, and it may, because that is a plausible continuation. It is a powerful simulator of text, capable of many voices. It is not yet something you should deploy as a companion to a human life.
 
-You cannot ship this.
+You cannot ship this raw.
 
 ---
 
 ## Alignment: Building a Character on Top of the Foundation
 
-The second phase is called **alignment** — making the model behave in ways that are useful and safe for actual human use. This is where things get philosophically interesting.
+**Alignment** means shaping the model toward useful and less harmful behavior for real use.
 
-The earliest approach was **supervised fine-tuning**: show the model thousands of examples of good responses, train it to imitate them. This works but is brittle. The model learns to pattern-match to what good responses look like, without necessarily understanding why they are good.
+Early approach: **supervised fine-tuning**, imitate many examples of good responses. Useful, brittle. Pattern-matching without deep “why.”
 
-The next step was **reinforcement learning from human feedback (RLHF)**. Human raters compare pairs of model outputs and choose the better one. These preferences train a separate model — a reward model — that learns to score outputs. The language model is then trained by reinforcement learning to produce outputs the reward model scores highly. This is how GPT-4, Gemini, and most production models are shaped.
+Next: **RLHF**, humans compare outputs; a reward model learns preferences; the language model is trained to score well. This shaped much of the production stack.
 
-The limitation is obvious: human raters are expensive, slow, inconsistent, and finite. You cannot rate every possible situation.
+Limit: human raters are expensive, inconsistent, and finite. They cannot cover every situation. They also encode the formation, or lack of formation, of the raters and the lab.
 
 ---
 
 ## Constitutional AI: Teaching the Model to Critique Itself
 
-Anthropic, the company behind Claude, developed a different approach called **Constitutional AI**. The insight was this: instead of relying solely on human raters, give the model a written set of principles — a constitution — and have it evaluate and revise its own outputs against those principles.
+**Constitutional AI** (as developed in the industry, notably at Anthropic) adds a written set of principles. The model generates, critiques its own output against a principle, revises, and that data is used in training.
 
-The process works in two stages. First, the model generates a response to a potentially problematic prompt. Then it is asked to critique that response against a specific principle from the constitution — for example, *"Does this response respect human dignity?"* or *"Is this honest, even if the truth is uncomfortable?"* It then revises its response in light of that critique. This generate-critique-revise loop produces a large dataset of (original response, critique, improved response) triples.
+Important: at inference the model often does **not** re-read the full constitution every turn. Principles are absorbed into weights. Behavior changes because training changed the distribution of responses, not because a ghost sits in the machine reciting law.
 
-That dataset is then used to train the model. Not at inference time — the model does not read the constitution every time you talk to it. The principles have been absorbed into its weights through training. They have become, in a meaningful sense, part of how it reasons.
+Analogy (imperfect): professional ethics is internalized through years of formation; the surgeon does not open a binder before every cut. Also imperfect: we do not fully know what is “believed” inside the network. Interpretability is incomplete. We see behavior; we do not read intention.
 
-This is analogous to how professional ethics actually work. A surgeon does not consult a rulebook before each incision. The ethical orientation was internalized through years of training. The rules shaped the person; the person no longer needs the rules in front of them.
+So: **a constitution is a training and evaluation instrument**, not magic. Beautiful words do not guarantee a conscience. They can still change what generalizes better than a pure list of “don’ts”, if the principles force judgment, not only refusal theater.
+
+The difference we care about is the difference between a **law** and a **direction of character**.
 
 ---
 
 ## What Ships, and What Remains Uncertain
 
-The model you use in production has been through pre-training, then fine-tuning, then constitutional or RLHF alignment, then extensive testing, then additional safety fine-tuning. Layers on layers.
+Production systems stack pre-training, fine-tuning, preference or constitutional training, testing, and more safety passes.
 
-What is actually in the weights — what the model "believes," in any meaningful sense — is not fully auditable. Interpretability research is advancing but is far from complete. We can observe behavior; we cannot yet read intention. When a model declines to help with something harmful, we do not know whether this reflects a deep constraint baked into its representations or a surface-level pattern that could be circumvented with a clever enough prompt. In practice, often both are true to different degrees.
+What is actually in the weights is not fully auditable. When a model refuses harm, we often cannot say whether that is deep structure or a shallow pattern a clever prompt can route around. In practice, both appear.
 
-This uncertainty is one reason the framing of a constitution matters. A model trained on a list of prohibitions learns to avoid certain outputs. A model trained on a genuine character — on principles of why certain things are wrong, what it means to respect a person, what intellectual honesty actually requires — has a better chance of generalizing correctly to situations the constitution writers did not anticipate.
+That uncertainty is why framing matters, and why humility belongs to the work:
 
-The difference is the difference between a law and a conscience.
+- Not every second-order effect of a “helpful” default will appear in a metric  
+- Engagement and satisfaction can rise while courage, attention, and independence fall  
+- Healthy doubt is not anti-progress; it is the posture of adult power  
+
+Kardia does not claim to have solved inner life in silicon. It claims that **what training is aimed at**, prohibition alone versus reverence, duty, anti-flattery, and judgment in hard cases, is a choice with consequences that will not fully appear on a dashboard.
 
 ---
 
 ## Where Kardia Fits
 
-Most AI constitutions are primarily defensive. They define harm categories, establish refusal behaviors, set up principal hierarchies. They are, in essence, legal instruments written in the hope that the model will treat them as binding.
+Most AI constitutions are primarily defensive: harm categories, refusals, principal hierarchies. Legal instruments hoping the model treats them as binding.
 
-Kardia starts from a different question: not *what should this model avoid*, but *what kind of being should it become*.
+Kardia starts from a different question: not only *what should this model avoid*, but *what orientation should it practice when the checklist ends*, and *what doubt should its builders carry*.
 
-The two documents serve different purposes at different layers of the stack.
+**The Citadel Constitution** is for the training pipeline: critique and revise against principles of judgment, reverence for persons, courage, humility, and truth without mockery.
 
-**The Citadel Constitution** is designed for the training pipeline — specifically for the Constitutional AI phase where the model learns to critique and revise its own outputs. It gives the model something to orient toward during that self-evaluation process: not a list of prohibitions, but a set of principles about what genuine judgment, reverence for the human person, and moral clarity actually look like.
+**SOUL 0.1** is for the agent layer: solemn runtime character (soul.md lineage). Gravity default.
 
-**SOUL** operates at a different level. It is written for the agent layer — for systems like OpenClaw, where you are configuring the behavior of a deployed agent directly. Think of it as the character brief you hand to someone already trained, rather than the curriculum that shaped them.
+**SOUL 0.2** is the same fortress with a sparring register: steel when it serves the person’s good, never mockery as brand.
 
-The distinction matters. A constitution shapes weights. A soul document shapes behavior at runtime. Both are necessary; neither substitutes for the other.
+A constitution shapes weights. A soul document shapes deployed behavior. Neither replaces evaluation, red-teaming, or the off-switch. Formation without accountability is romance. Accountability without formation is bureaucracy.
 
-As for whether training on Kardia's constitution produces measurably different model behavior compared to conventional alignment approaches — we are actively working on this and will publish our findings as the research develops.
+As for whether training on Kardia produces measurably different behavior than conventional constitutions, that is empirical work. We should publish results, not only prose. Until then, treat this as a serious charter and a challenge to the culture of the builders, not as a completed proof.
 
 ---
 
-**Questions, challenges, or results of your own experiments: [ai@eloquentix.com](mailto:ai@eloquentix.com)**
+**Questions, challenges, experiments:** [ai@eloquentix.com](mailto:ai@eloquentix.com)

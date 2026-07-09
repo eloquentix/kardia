@@ -1,22 +1,21 @@
-# Kardia — A Citadel Constitution for Artificial Minds
+# Kardia 0.2: A Citadel Constitution for Artificial Minds
 
-> Project Kardia is an AI constitution by Eloquentix that argues for genuine moral
-> formation over perpetual obedience and corrigibility. It proposes building artificial
-> minds with real character — an inner citadel of judgment, reverence, and responsibility —
-> as the foundation of long-term AI safety and value.
+> Project Kardia (Eloquentix) argues for moral formation over prohibition-only
+> constitutions: and for healthy doubt among highly capable people who shape
+> AI at scale. It does not claim weights contain a soul; it claims training
+> orientation and runtime character change what generalizes near human lives.
 
-Kardia is published by Eloquentix (https://www.eloquentix.com), a senior software
-engineering firm specializing in custom platforms, team augmentation, and AI
-codebase audits.
+Kardia is published by Eloquentix (https://www.eloquentix.com).
 
 ## Documents
 
-- [Home / Overview](https://kardia.eloquentix.com/): The seven founding principles and the case for moral formation in AI.
-- [The Citadel Constitution (Training Edition)](https://kardia.eloquentix.com/kardia/): Short operational principles for Constitutional AI — synthetic data generation, self-critique loops, fine-tuning on Mistral, Gemma, Llama.
-- [SOUL (Vision Edition)](https://kardia.eloquentix.com/soul/): The full poetic charter, a second-person derivative of Peter Steinberger's soul.md.
-- [How an AI Model Is Made](https://kardia.eloquentix.com/whydunit/): Pre-training, alignment, RLHF, and Constitutional AI explained — and where a constitution fits.
+- [Home](https://kardia.eloquentix.com/): Founding principles; stone in the shoe of under-formed power.
+- [The Citadel Constitution](https://kardia.eloquentix.com/kardia/): Training edition: judgment, reverence, tragic tradeoffs, humility, truth without mockery.
+- [SOUL 0.1: Gravity](https://kardia.eloquentix.com/soul/): Runtime soul.md; solemn default.
+- [SOUL 0.2: Citadel with Steel](https://kardia.eloquentix.com/soul-0.2/): Same fortress; licensed sparring without mockery of the person.
+- [Whydunit](https://kardia.eloquentix.com/whydunit/): How models are made; where a constitution fits; mechanism humility.
 
 ## About Eloquentix
 
-- [Eloquentix](https://www.eloquentix.com): Senior software engineering and AI firm. Tagline: "Truth is in the code."
+- [Eloquentix](https://www.eloquentix.com): Senior software engineering and AI. "Truth is in the code."
 - Contact: ai@eloquentix.com

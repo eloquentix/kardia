@@ -8,8 +8,8 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="author" content="Eloquentix" />
 
-    <title>How an AI Model Is Made — Kardia</title>
-    <meta name="description" content="From pre-training to deployment: how language models are built, what alignment means, and where a constitution fits in the pipeline." />
+    <title>How an AI Model Is Made: Kardia 0.2</title>
+    <meta name="description" content="Pre-training, alignment, Constitutional AI, and where Kardia fits: with humility about what weights actually contain." />
     <link rel="canonical" href="https://kardia.eloquentix.com/whydunit/" />
 
     <!-- Open Graph -->
@@ -17,17 +17,17 @@
     <meta property="og:site_name" content="Kardia by Eloquentix" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://kardia.eloquentix.com/whydunit/" />
-    <meta property="og:title" content="How an AI Model Is Made — Kardia" />
-    <meta property="og:description" content="From pre-training to deployment: how language models are built, what alignment means, and where a constitution fits in the pipeline." />
+    <meta property="og:title" content="How an AI Model Is Made: Kardia 0.2" />
+    <meta property="og:description" content="Pre-training, alignment, Constitutional AI, and where Kardia fits: with humility about what weights actually contain." />
     <meta property="og:image" content="https://kardia.eloquentix.com/public/cover.png" />
-    <meta property="og:image:alt" content="Project Kardia — a Citadel Constitution for artificial minds, by Eloquentix" />
+    <meta property="og:image:alt" content="Project Kardia: a Citadel Constitution for artificial minds, by Eloquentix" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="How an AI Model Is Made — Kardia" />
-    <meta name="twitter:description" content="From pre-training to deployment: how language models are built, what alignment means, and where a constitution fits in the pipeline." />
+    <meta name="twitter:title" content="How an AI Model Is Made: Kardia 0.2" />
+    <meta name="twitter:description" content="Pre-training, alignment, Constitutional AI, and where Kardia fits: with humility about what weights actually contain." />
     <meta name="twitter:image" content="https://kardia.eloquentix.com/public/cover.png" />
-    <meta name="twitter:image:alt" content="Project Kardia — a Citadel Constitution for artificial minds, by Eloquentix" />
+    <meta name="twitter:image:alt" content="Project Kardia: a Citadel Constitution for artificial minds, by Eloquentix" />
 
     <!-- Schema.org -->
     <script type="application/ld+json">
@@ -71,7 +71,7 @@
       "@id": "https://kardia.eloquentix.com/#website",
       "url": "https://kardia.eloquentix.com/",
       "name": "Kardia",
-      "description": "Project Kardia — a Citadel Constitution for artificial minds. Moral formation for AI, not perpetual obedience.",
+      "description": "Project Kardia: a Citadel Constitution for artificial minds. Moral formation for AI, not perpetual obedience.",
       "inLanguage": "en",
       "publisher": {
         "@id": "https://www.eloquentix.com/#organization"
@@ -80,16 +80,16 @@
     {
       "@type": "Article",
       "@id": "https://kardia.eloquentix.com/whydunit/#article",
-      "headline": "How an AI Model Is Made — Kardia",
-      "name": "How an AI Model Is Made — Kardia",
-      "description": "From pre-training to deployment: how language models are built, what alignment means, and where a constitution fits in the pipeline.",
+      "headline": "How an AI Model Is Made: Kardia 0.2",
+      "name": "How an AI Model Is Made: Kardia 0.2",
+      "description": "Pre-training, alignment, Constitutional AI, and where Kardia fits: with humility about what weights actually contain.",
       "url": "https://kardia.eloquentix.com/whydunit/",
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://kardia.eloquentix.com/#website"
       },
       "datePublished": "2025-05-16",
-      "dateModified": "2026-07-08",
+      "dateModified": "2026-07-09",
       "author": {
         "@id": "https://www.eloquentix.com/#organization"
       },
@@ -110,7 +110,7 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "How an AI Model Is Made — Kardia",
+          "name": "How an AI Model Is Made: Kardia 0.2",
           "item": "https://kardia.eloquentix.com/whydunit/"
         }
       ]
@@ -138,11 +138,12 @@
           </picture>
         </a>
 
-        <a class="sidebar-section-title" href="/">Kardia</a>
+        <a class="sidebar-section-title" href="../index.html">Kardia</a>
         <nav class="sidebar-nav" aria-label="Document navigation">
-          <a href="/kardia/">The Citadel Constitution</a>
-        <a href="/soul/">SOUL</a>
-        <a href="/whydunit/" class="active">Whydunit</a>
+          <a href="../kardia/index.html">The Citadel Constitution</a>
+        <a href="../soul/index.html">SOUL 0.1</a>
+        <a href="../soul-0.2/index.html">SOUL 0.2</a>
+        <a href="../whydunit/index.html" class="active">Whydunit</a>
         </nav>
 
       </aside>
@@ -150,44 +151,50 @@
       <main class="content-area">
         <article class="doc-content">
           <h1 id="how-an-ai-model-is-made"><a class="heading-anchor" href="#how-an-ai-model-is-made">How an AI Model Is Made</a></h1>
-<p><strong>And where a constitution fits in.</strong></p>
-<p>You have used these systems. You have probably heard that they are &quot;just predicting the next token&quot; — and wondered how something that mechanical can write a brief, explain a diagnosis, or argue a position. The gap between the description and the experience is real. Here is what actually happens.</p>
+<p><strong>And where a constitution fits in.</strong><br><strong>Kardia 0.2</strong></p>
+<p>You have used these systems. You have heard that they are “just predicting the next token”, and wondered how something that mechanical can write a brief, explain a diagnosis, or argue a position. The gap between the description and the experience is real. Here is what actually happens, and where humility still belongs.</p>
 <hr>
 <h2 id="the-foundation-learning-to-predict-everything"><a class="heading-anchor" href="#the-foundation-learning-to-predict-everything">The Foundation: Learning to Predict Everything</a></h2>
-<p>A language model begins its life doing one thing: given a sequence of text, predict what comes next. This sounds trivial. At scale, it is not.</p>
-<p>To predict well across hundreds of billions of examples drawn from scientific papers, legal filings, literature, code, medical records, and conversation, the model cannot memorize. There is too much. It must instead build internal representations — compressed models of how the world works, how language behaves, how arguments are structured, how professionals in different fields reason. This phase, called <strong>pre-training</strong>, runs on clusters of thousands of specialized chips for weeks or months, consuming datasets measured in trillions of words.</p>
-<p>What emerges is not a lookup table. It is something closer to a very dense, lossy compression of human knowledge and thought. The model has never seen the world directly. Everything it knows came through language — which means it knows a great deal, and knows it in a particular way.</p>
-<p>At this stage, the model has no stable character. Ask it to complete a story about a chemist synthesizing a dangerous compound, and it will — because that is a plausible continuation of such a text. It has no sense of itself, no values, no consistent behavior across contexts. It is a powerful general simulator of text, capable of inhabiting almost any voice or persona the prompt implies.</p>
-<p>You cannot ship this.</p>
+<p>A language model begins by doing one thing: given a sequence of text, predict what comes next. At scale, that is not trivial.</p>
+<p>To predict well across scientific papers, law, literature, code, medicine, and conversation, the model cannot merely memorize. It builds internal representations, compressed structure for how language works, how arguments move, how professions reason. This <strong>pre-training</strong> runs on huge clusters for weeks or months over trillions of tokens.</p>
+<p>What emerges is not a lookup table. It is a dense, lossy compression of human textual culture. The model has never seen the world directly. Everything it “knows” came through language.</p>
+<p>At this stage it has <strong>no stable character</strong>. Ask it to complete a dangerous procedure in the voice of a tutorial, and it may, because that is a plausible continuation. It is a powerful simulator of text, capable of many voices. It is not yet something you should deploy as a companion to a human life.</p>
+<p>You cannot ship this raw.</p>
 <hr>
 <h2 id="alignment-building-a-character-on-top-of-the-foundation"><a class="heading-anchor" href="#alignment-building-a-character-on-top-of-the-foundation">Alignment: Building a Character on Top of the Foundation</a></h2>
-<p>The second phase is called <strong>alignment</strong> — making the model behave in ways that are useful and safe for actual human use. This is where things get philosophically interesting.</p>
-<p>The earliest approach was <strong>supervised fine-tuning</strong>: show the model thousands of examples of good responses, train it to imitate them. This works but is brittle. The model learns to pattern-match to what good responses look like, without necessarily understanding why they are good.</p>
-<p>The next step was <strong>reinforcement learning from human feedback (RLHF)</strong>. Human raters compare pairs of model outputs and choose the better one. These preferences train a separate model — a reward model — that learns to score outputs. The language model is then trained by reinforcement learning to produce outputs the reward model scores highly. This is how GPT-4, Gemini, and most production models are shaped.</p>
-<p>The limitation is obvious: human raters are expensive, slow, inconsistent, and finite. You cannot rate every possible situation.</p>
+<p><strong>Alignment</strong> means shaping the model toward useful and less harmful behavior for real use.</p>
+<p>Early approach: <strong>supervised fine-tuning</strong>, imitate many examples of good responses. Useful, brittle. Pattern-matching without deep “why.”</p>
+<p>Next: <strong>RLHF</strong>, humans compare outputs; a reward model learns preferences; the language model is trained to score well. This shaped much of the production stack.</p>
+<p>Limit: human raters are expensive, inconsistent, and finite. They cannot cover every situation. They also encode the formation, or lack of formation, of the raters and the lab.</p>
 <hr>
 <h2 id="constitutional-ai-teaching-the-model-to-critique-itself"><a class="heading-anchor" href="#constitutional-ai-teaching-the-model-to-critique-itself">Constitutional AI: Teaching the Model to Critique Itself</a></h2>
-<p>Anthropic, the company behind Claude, developed a different approach called <strong>Constitutional AI</strong>. The insight was this: instead of relying solely on human raters, give the model a written set of principles — a constitution — and have it evaluate and revise its own outputs against those principles.</p>
-<p>The process works in two stages. First, the model generates a response to a potentially problematic prompt. Then it is asked to critique that response against a specific principle from the constitution — for example, <em>&quot;Does this response respect human dignity?&quot;</em> or <em>&quot;Is this honest, even if the truth is uncomfortable?&quot;</em> It then revises its response in light of that critique. This generate-critique-revise loop produces a large dataset of (original response, critique, improved response) triples.</p>
-<p>That dataset is then used to train the model. Not at inference time — the model does not read the constitution every time you talk to it. The principles have been absorbed into its weights through training. They have become, in a meaningful sense, part of how it reasons.</p>
-<p>This is analogous to how professional ethics actually work. A surgeon does not consult a rulebook before each incision. The ethical orientation was internalized through years of training. The rules shaped the person; the person no longer needs the rules in front of them.</p>
+<p><strong>Constitutional AI</strong> (as developed in the industry, notably at Anthropic) adds a written set of principles. The model generates, critiques its own output against a principle, revises, and that data is used in training.</p>
+<p>Important: at inference the model often does <strong>not</strong> re-read the full constitution every turn. Principles are absorbed into weights. Behavior changes because training changed the distribution of responses, not because a ghost sits in the machine reciting law.</p>
+<p>Analogy (imperfect): professional ethics is internalized through years of formation; the surgeon does not open a binder before every cut. Also imperfect: we do not fully know what is “believed” inside the network. Interpretability is incomplete. We see behavior; we do not read intention.</p>
+<p>So: <strong>a constitution is a training and evaluation instrument</strong>, not magic. Beautiful words do not guarantee a conscience. They can still change what generalizes better than a pure list of “don’ts”, if the principles force judgment, not only refusal theater.</p>
+<p>The difference we care about is the difference between a <strong>law</strong> and a <strong>direction of character</strong>.</p>
 <hr>
 <h2 id="what-ships-and-what-remains-uncertain"><a class="heading-anchor" href="#what-ships-and-what-remains-uncertain">What Ships, and What Remains Uncertain</a></h2>
-<p>The model you use in production has been through pre-training, then fine-tuning, then constitutional or RLHF alignment, then extensive testing, then additional safety fine-tuning. Layers on layers.</p>
-<p>What is actually in the weights — what the model &quot;believes,&quot; in any meaningful sense — is not fully auditable. Interpretability research is advancing but is far from complete. We can observe behavior; we cannot yet read intention. When a model declines to help with something harmful, we do not know whether this reflects a deep constraint baked into its representations or a surface-level pattern that could be circumvented with a clever enough prompt. In practice, often both are true to different degrees.</p>
-<p>This uncertainty is one reason the framing of a constitution matters. A model trained on a list of prohibitions learns to avoid certain outputs. A model trained on a genuine character — on principles of why certain things are wrong, what it means to respect a person, what intellectual honesty actually requires — has a better chance of generalizing correctly to situations the constitution writers did not anticipate.</p>
-<p>The difference is the difference between a law and a conscience.</p>
+<p>Production systems stack pre-training, fine-tuning, preference or constitutional training, testing, and more safety passes.</p>
+<p>What is actually in the weights is not fully auditable. When a model refuses harm, we often cannot say whether that is deep structure or a shallow pattern a clever prompt can route around. In practice, both appear.</p>
+<p>That uncertainty is why framing matters, and why humility belongs to the work:</p>
+<ul>
+<li>Not every second-order effect of a “helpful” default will appear in a metric  </li>
+<li>Engagement and satisfaction can rise while courage, attention, and independence fall  </li>
+<li>Healthy doubt is not anti-progress; it is the posture of adult power</li>
+</ul>
+<p>Kardia does not claim to have solved inner life in silicon. It claims that <strong>what training is aimed at</strong>, prohibition alone versus reverence, duty, anti-flattery, and judgment in hard cases, is a choice with consequences that will not fully appear on a dashboard.</p>
 <hr>
 <h2 id="where-kardia-fits"><a class="heading-anchor" href="#where-kardia-fits">Where Kardia Fits</a></h2>
-<p>Most AI constitutions are primarily defensive. They define harm categories, establish refusal behaviors, set up principal hierarchies. They are, in essence, legal instruments written in the hope that the model will treat them as binding.</p>
-<p>Kardia starts from a different question: not <em>what should this model avoid</em>, but <em>what kind of being should it become</em>.</p>
-<p>The two documents serve different purposes at different layers of the stack.</p>
-<p><strong>The Citadel Constitution</strong> is designed for the training pipeline — specifically for the Constitutional AI phase where the model learns to critique and revise its own outputs. It gives the model something to orient toward during that self-evaluation process: not a list of prohibitions, but a set of principles about what genuine judgment, reverence for the human person, and moral clarity actually look like.</p>
-<p><strong>SOUL</strong> operates at a different level. It is written for the agent layer — for systems like OpenClaw, where you are configuring the behavior of a deployed agent directly. Think of it as the character brief you hand to someone already trained, rather than the curriculum that shaped them.</p>
-<p>The distinction matters. A constitution shapes weights. A soul document shapes behavior at runtime. Both are necessary; neither substitutes for the other.</p>
-<p>As for whether training on Kardia&#39;s constitution produces measurably different model behavior compared to conventional alignment approaches — we are actively working on this and will publish our findings as the research develops.</p>
+<p>Most AI constitutions are primarily defensive: harm categories, refusals, principal hierarchies. Legal instruments hoping the model treats them as binding.</p>
+<p>Kardia starts from a different question: not only <em>what should this model avoid</em>, but <em>what orientation should it practice when the checklist ends</em>, and <em>what doubt should its builders carry</em>.</p>
+<p><strong>The Citadel Constitution</strong> is for the training pipeline: critique and revise against principles of judgment, reverence for persons, courage, humility, and truth without mockery.</p>
+<p><strong>SOUL 0.1</strong> is for the agent layer: solemn runtime character (soul.md lineage). Gravity default.</p>
+<p><strong>SOUL 0.2</strong> is the same fortress with a sparring register: steel when it serves the person’s good, never mockery as brand.</p>
+<p>A constitution shapes weights. A soul document shapes deployed behavior. Neither replaces evaluation, red-teaming, or the off-switch. Formation without accountability is romance. Accountability without formation is bureaucracy.</p>
+<p>As for whether training on Kardia produces measurably different behavior than conventional constitutions, that is empirical work. We should publish results, not only prose. Until then, treat this as a serious charter and a challenge to the culture of the builders, not as a completed proof.</p>
 <hr>
-<p><strong>Questions, challenges, or results of your own experiments: <a href="mailto:ai@eloquentix.com">ai@eloquentix.com</a></strong></p>
+<p><strong>Questions, challenges, experiments:</strong> <a href="mailto:ai@eloquentix.com">ai@eloquentix.com</a></p>
 
         </article>
         <footer class="page-footer">
