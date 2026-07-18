@@ -59,4 +59,9 @@ From these foundations, we developed Kardia, The Citadel Constitution.
 - **[Whydunit](/whydunit/)** · How an AI model is made  
   Where a constitution fits in the stack, and what remains uncertain.
 
+### Experiments
+
+- **[Does a short constitution behave like a long one?](https://blog.eloquentix.com/testing-whether-a-short-ai-constitution-behaves-like-a-long-one/)** · A $2 probe  
+  A cheap divergence test, before any fine-tuning: the ~1,800-word Citadel produces behavior nearly identical to a ~29,000-word rule hierarchy on ~90% of prompts, and diverges specifically on the corrigibility axis. Method, both judge runs, honest limits. Code and data: **[eloquentix/kardia-experiment](https://github.com/eloquentix/kardia-experiment)**.
+
 Read the documents, experiment, fork, contribute.
